@@ -463,9 +463,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If you encounter any issues or have questions, please:
 
-1. Check the [documentation](https://github.com/your-repo/jsonport)
-2. Search [existing issues](https://github.com/your-repo/jsonport/issues)
-3. Create a [new issue](https://github.com/your-repo/jsonport/issues/new)
+1. Check the [documentation](https://github.com/luan1schons/jsonport)
+2. Search [existing issues](https://github.com/luan1schons/jsonport/issues)
+3. Create a [new issue](https://github.com/luan1schons/jsonport/issues/new)
 
 ---
 
