@@ -1,6 +1,6 @@
 # JsonPort
 
-[![Python](https://img.shields.io/badge/Python-3.7+-blue.svg)](https://www.python.org/downloads/)
+[![Python](https://img.shields.io/badge/Python-3.8%20%7C%203.9%20%7C%203.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![PyPI](https://img.shields.io/badge/PyPI-jsonport-red.svg)](https://pypi.org/project/jsonport/)
 
@@ -22,6 +22,19 @@ A high-performance Python library for seamless serialization and deserialization
 ```bash
 pip install jsonport
 ```
+
+## Python Version Support
+
+JsonPort supports the following Python versions:
+
+- **Python 3.8** - Full support with all features
+- **Python 3.9** - Full support with all features
+- **Python 3.10** - Full support with all features
+- **Python 3.11** - Full support with all features
+- **Python 3.12** - Full support with all features
+- **Python 3.13** - Full support with all features
+
+All features including dataclasses, type hints, datetime handling, and file operations work consistently across all supported Python versions.
 
 ## Quick Start
 
