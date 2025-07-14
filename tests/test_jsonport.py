@@ -47,7 +47,7 @@ def sample_event():
     
     return Event(
         title="Meeting",
-        date=datetime(2025, 7, 14, 12, 0, 0),
+        date=date(2025, 7, 14),
         time=dt_time(14, 30, 0),
         created_at=datetime(2025, 7, 14, 14, 30, 0)
     )
