@@ -150,3 +150,6 @@ deploy.sh
 release.sh 
 CHANGELOG.md.backup
 DEPLOY.md
+
+# MkDocs build output
+site/
