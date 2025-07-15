@@ -1,45 +1,38 @@
-# JsonPort
+# JsonPort 🚀
 
-[![Python](https://img.shields.io/badge/Python-3.8%20%7C%203.9%20%7C%203.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://www.python.org/downloads/)
+[![Python](https://img.shields.io/badge/Python-3.7%20%7C%203.8%20%7C%203.9%20%7C%203.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![PyPI](https://img.shields.io/badge/PyPI-jsonport-red.svg)](https://pypi.org/project/jsonport/)
+[![Version](https://img.shields.io/pypi/v/jsonport.svg)](https://pypi.org/project/jsonport/)
+[![Downloads](https://static.pepy.tech/badge/jsonport)](https://pepy.tech/project/jsonport)
+[![CI](https://github.com/Luan1Schons/JsonPort/workflows/Tests/badge.svg)](https://github.com/Luan1Schons/JsonPort/actions)
+[![Coverage](https://codecov.io/gh/Luan1Schons/JsonPort/branch/main/graph/badge.svg)](https://codecov.io/gh/Luan1Schons/JsonPort)
 
-A high-performance Python library for seamless serialization and deserialization of complex Python objects to/from JSON format. JsonPort provides intelligent type handling, caching optimizations, and support for dataclasses, enums, datetime objects, and collections.
+> **A high-performance Python library for seamless serialization and deserialization of complex Python objects to/from JSON format.** 
 
-## Features
+JsonPort provides intelligent type handling, caching optimizations, and comprehensive support for dataclasses, enums, datetime objects, and collections with blazing fast performance! ⚡
 
-- 🚀 **High Performance**: Optimized with caching for type hints and optional type resolution
-- 🎯 **Type Safety**: Full type hints support with automatic type conversion
-- 📦 **Dataclass Support**: Native serialization/deserialization of dataclasses
-- 🗓️ **DateTime Handling**: Automatic ISO format conversion for datetime objects
-- 🔄 **Collection Support**: Lists, tuples, sets, and dictionaries with type preservation
-- 📁 **File Operations**: Direct file I/O with gzip compression support
-- 🎨 **Enum Support**: Automatic enum value serialization
-- 🛡️ **Error Handling**: Comprehensive error messages and validation
+## ✨ Features
 
-## Installation
+| Feature | Description |
+|---------|-------------|
+| 🚀 **High Performance** | Optimized with intelligent caching for type hints and optional type resolution |
+| 🎯 **Type Safety** | Full type hints support with automatic type conversion and validation |
+| 📦 **Dataclass Support** | Native serialization/deserialization of dataclasses with zero configuration |
+| 🗓️ **DateTime Handling** | Automatic ISO format conversion for datetime, date, and time objects |
+| 🔄 **Collection Support** | Lists, tuples, sets, and dictionaries with perfect type preservation |
+| 📁 **File Operations** | Direct file I/O with automatic gzip compression support |
+| 🎨 **Enum Support** | Automatic enum value serialization with type safety |
+| 🛡️ **Error Handling** | Comprehensive error messages and validation with detailed feedback |
+| 🔧 **Zero Dependencies** | Pure Python implementation with no external dependencies |
+
+## 🚀 Quick Start
+
+### Installation
 
 ```bash
 pip install jsonport
 ```
-
-## Python Version Support
-
-JsonPort supports the following Python versions:
-
-- **Python 3.7** - Full support with all features (EOL - End of Life)
-- **Python 3.8** - Full support with all features
-- **Python 3.9** - Full support with all features
-- **Python 3.10** - Full support with all features
-- **Python 3.11** - Full support with all features
-- **Python 3.12** - Full support with all features
-- **Python 3.13** - Full support with all features
-
-All features including dataclasses, type hints, datetime handling, and file operations work consistently across all supported Python versions.
-
-> **Note**: Python 3.7 reached End of Life (EOL) in June 2023. While JsonPort still supports Python 3.7 for compatibility with existing projects, we recommend upgrading to Python 3.8+ for new projects. The CI/CD pipeline tests Python 3.8+ due to GitHub Actions limitations.
-
-## Quick Start
 
 ### Basic Usage
 
@@ -104,7 +97,23 @@ dump_file(user, "user.json.gz")
 compressed_user = load_file("user.json.gz", User)
 ```
 
-## Advanced Examples
+## 🐍 Python Version Support
+
+JsonPort supports the following Python versions:
+
+| Version | Status | Features |
+|---------|--------|----------|
+| **Python 3.7** | ✅ Full Support | All features (EOL - End of Life) |
+| **Python 3.8** | ✅ Full Support | All features |
+| **Python 3.9** | ✅ Full Support | All features |
+| **Python 3.10** | ✅ Full Support | All features |
+| **Python 3.11** | ✅ Full Support | All features |
+| **Python 3.12** | ✅ Full Support | All features |
+| **Python 3.13** | ✅ Full Support | All features |
+
+> **Note**: Python 3.7 reached End of Life (EOL) in June 2023. While JsonPort still supports Python 3.7 for compatibility with existing projects, we recommend upgrading to Python 3.8+ for new projects.
+
+## 📚 Advanced Examples
 
 ### Complex Nested Structures
 
@@ -230,7 +239,7 @@ except JsonPortError as e:
     print(f"Deserialization error: {e}")
 ```
 
-## Performance Features
+## 📊 Performance Features
 
 ### Caching Optimizations
 
@@ -278,56 +287,71 @@ print(f"Serialization: {serialization_time:.4f}s")
 print(f"Deserialization: {deserialization_time:.4f}s")
 ```
 
-## API Reference
+## 🧪 Testing
+
+JsonPort uses **pytest** for all automated tests. To run the test suite:
+
+### Install Test Dependencies
+```bash
+pip install -e ".[test]"
+```
+
+### Run Tests
+```bash
+# All tests
+pytest -v
+
+# With coverage
+pytest --cov
+
+# Only fast unit tests
+pytest -m 'not slow and not integration' -v
+
+# Only performance tests
+pytest -m slow -v
+
+# Only integration tests
+pytest -m integration -v
+```
+
+### Benchmarking
+```bash
+# Run performance benchmarks
+pytest --benchmark-only -v
+```
+
+Example output:
+```
+--------------------------------------------------------------------------------------------- benchmark: 2 tests -----------------------------------------------------------------------------
+Name (time in us)                       Min                 Max                Mean             StdDev              Median                IQR            Outliers  OPS (Kops/s)            Rounds  Iterations
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+test_deserialization_benchmark     110.3460 (1.0)      263.2940 (1.0)      120.8443 (1.0)      12.3452 (1.0)      118.4470 (1.0)       6.0770 (1.0)       386;464        8.2751 (1.0)        6829           1
+test_serialization_benchmark       251.4210 (2.28)     522.7470 (1.99)     270.2584 (2.24)     16.9108 (1.37)     266.3670 (2.25)     12.2920 (2.02)      218;161        3.7002 (0.45)       2499           1
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+```
+
+## 📖 API Reference
 
 ### Core Functions
 
-#### `dump(obj: Any) -> Any`
-Serialize a Python object to JSON-serializable format.
-
-**Parameters:**
-- `obj`: Object to serialize (dataclass, list, tuple, set, dict, or primitive)
-
-**Returns:**
-- JSON-serializable dictionary, list, or primitive value
-
-#### `load(data: Any, target_class: Type[T]) -> T`
-Deserialize JSON data to Python object.
-
-**Parameters:**
-- `data`: Dictionary/list to deserialize
-- `target_class`: Target class for deserialization
-
-**Returns:**
-- Instance of the target class
-
-#### `dump_file(obj: Any, path: str, overwrite: bool = True) -> None`
-Serialize object and save to JSON file.
-
-**Parameters:**
-- `obj`: Object to serialize
-- `path`: Path to the JSON file
-- `overwrite`: If False, raises error when file exists
-
-#### `load_file(path: str, target_class: Type[T]) -> T`
-Load JSON file and deserialize to object.
-
-**Parameters:**
-- `path`: Path to the JSON file
-- `target_class`: Target class for deserialization
-
-**Returns:**
-- Instance of the target class
+| Function | Description | Parameters | Returns |
+|----------|-------------|------------|---------|
+| `dump(obj)` | Serialize object to JSON-serializable format | `obj`: Object to serialize | JSON-serializable data |
+| `load(data, target_class)` | Deserialize JSON data to Python object | `data`: Data to deserialize<br>`target_class`: Target class | Instance of target class |
+| `dump_file(obj, path, overwrite=True)` | Serialize object and save to file | `obj`: Object to serialize<br>`path`: File path<br>`overwrite`: Overwrite existing file | None |
+| `load_file(path, target_class)` | Load JSON file and deserialize | `path`: File path<br>`target_class`: Target class | Instance of target class |
 
 ### Supported Types
 
-- **Primitives**: `str`, `int`, `float`, `bool`
-- **Datetime**: `datetime.datetime`, `datetime.date`, `datetime.time`
-- **Collections**: `list`, `tuple`, `set`, `dict`
-- **Custom Types**: `dataclass`, `Enum`
-- **Optional Types**: `Optional[T]`, `Union[T, None]`
+| Category | Types |
+|----------|-------|
+| **Primitives** | `str`, `int`, `float`, `bool` |
+| **Datetime** | `datetime.datetime`, `datetime.date`, `datetime.time` |
+| **Collections** | `list`, `tuple`, `set`, `dict` |
+| **Custom Types** | `dataclass`, `Enum` |
+| **Optional Types** | `Optional[T]`, `Union[T, None]` |
 
-## Best Practices
+## 🎯 Best Practices
 
 ### 1. Use Type Hints
 Always define proper type hints for optimal performance and type safety:
@@ -376,160 +400,46 @@ except (FileNotFoundError, JsonPortError) as e:
     data = Config()  # Use default config
 ```
 
----
+## 🤝 Contributing
 
-## Running the Tests
+We welcome contributions! Here's how you can help:
 
-JsonPort uses **pytest** for all automated tests. To run the test suite:
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+4. **Push** to the branch (`git push origin feature/amazing-feature`)
+5. **Open** a Pull Request
 
-1. **Install test dependencies** (only once):
-
+### Development Setup
 ```bash
-pip install -e ".[test]"
-```
+# Clone the repository
+git clone https://github.com/Luan1Schons/JsonPort.git
+cd JsonPort
 
-2. **Run all tests:**
+# Install in development mode
+pip install -e ".[dev,test]"
 
-```bash
+# Run tests
 pytest -v
+
+# Format code
+black jsonport/ tests/
+
+# Check code quality
+flake8 jsonport/ tests/ --max-line-length=88 --extend-ignore=E203,W503,E501,F401,F811,F841,E731
 ```
 
-3. **Check code coverage:**
-
-```bash
-pytest --cov
-```
-
-4. **Run only fast unit tests (skip slow/integration):**
-
-```bash
-pytest -m 'not slow and not integration' -v
-```
-
-5. **Run only performance tests:**
-
-```bash
-pytest -m slow -v
-```
-
-6. **Run only integration tests:**
-
-```bash
-pytest -m integration -v
-```
-
-All tests are located in the `tests/` directory and cover all library features. If you see any errors, make sure you are using Python 3.7+ and all dependencies are installed.
-
----
-
-## Benchmarking
-
-JsonPort includes performance tests using **pytest-benchmark**. To run benchmarks and measure serialization/deserialization speed:
-
-```bash
-pytest --benchmark-only -v
-```
-
-Example output:
-
-```
---------------------------------------------------------------------------------------------- benchmark: 2 tests -----------------------------------------------------------------------------
-Name (time in us)                       Min                 Max                Mean             StdDev              Median                IQR            Outliers  OPS (Kops/s)            Rounds  Iterations
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-test_deserialization_benchmark     110.3460 (1.0)      263.2940 (1.0)      120.8443 (1.0)      12.3452 (1.0)      118.4470 (1.0)       6.0770 (1.0)       386;464        8.2751 (1.0)        6829           1
-test_serialization_benchmark       251.4210 (2.28)     522.7470 (1.99)     270.2584 (2.24)     16.9108 (1.37)     266.3670 (2.25)     12.2920 (2.02)      218;161        3.7002 (0.45)       2499           1
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-```
-
-- **OPS (Kops/s)**: Operations per second (higher is better)
-- **Mean**: Average time per operation
-- **Rounds/Iterations**: Number of repetitions for statistical accuracy
-
-You can compare results between runs or different machines. For more options, see:
-
-```bash
-pytest --help | grep benchmark
-```
-
----
-
-## Development and Deployment
-
-### Scripts de Deploy
-
-JsonPort inclui scripts automatizados para sincronizar o changelog e publicar no PyPI:
-
-#### Script Principal (`deploy.sh`)
-```bash
-# Build apenas (sem publicar)
-./deploy.sh
-
-# Build e publicar no PyPI
-./deploy.sh --publish
-
-# Build com versão específica
-./deploy.sh --version=1.1.0 --publish
-```
-
-#### Script Interativo (`release.sh`)
-```bash
-# Verifica mudanças e sugere ações
-./release.sh
-```
-
-**O que os scripts fazem:**
-- ✅ Atualizam o changelog automaticamente
-- ✅ Executam todos os testes
-- ✅ Verificam qualidade do código (black, flake8, mypy)
-- ✅ Constroem o pacote
-- ✅ Publicam no PyPI (se solicitado)
-- ✅ Criam tags e releases no GitHub
-- ✅ Sincronizam com o repositório
-
-**Configuração necessária:**
-1. Configure `~/.pypirc` com suas credenciais do PyPI
-2. Instale dependências: `pip install build twine pytest black flake8 mypy`
-
-Para mais detalhes, veja [DEPLOY.md](DEPLOY.md).
-
-### GitHub Actions
-
-O projeto usa GitHub Actions para:
-- **CI/CD**: Testes automáticos em todas as versões do Python
-- **Release**: Publicação automática no PyPI quando tags são criadas
-- **Code Quality**: Verificação de formatação e tipos
-
----
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Changelog
-
-### Version 1.0.0
-- Initial release
-- High-performance serialization/deserialization
-- Dataclass support with type hints
-- File I/O with gzip compression
-- Comprehensive error handling
-- Caching optimizations for type hints
-
-## Support
+## 🆘 Support
 
 If you encounter any issues or have questions, please:
 
-1. Check the [documentation](https://github.com/luan1schons/jsonport)
-2. Search [existing issues](https://github.com/luan1schons/jsonport/issues)
-3. Create a [new issue](https://github.com/luan1schons/jsonport/issues/new)
+1. 📖 Check the [documentation](https://github.com/luan1schons/jsonport)
+2. 🔍 Search [existing issues](https://github.com/luan1schons/jsonport/issues)
+3. 🐛 Create a [new issue](https://github.com/luan1schons/jsonport/issues/new)
 
 ---
 
