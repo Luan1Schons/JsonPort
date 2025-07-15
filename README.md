@@ -27,7 +27,7 @@ pip install jsonport
 
 JsonPort supports the following Python versions:
 
-- **Python 3.7** - Full support with all features
+- **Python 3.7** - Full support with all features (EOL - End of Life)
 - **Python 3.8** - Full support with all features
 - **Python 3.9** - Full support with all features
 - **Python 3.10** - Full support with all features
@@ -36,6 +36,8 @@ JsonPort supports the following Python versions:
 - **Python 3.13** - Full support with all features
 
 All features including dataclasses, type hints, datetime handling, and file operations work consistently across all supported Python versions.
+
+> **Note**: Python 3.7 reached End of Life (EOL) in June 2023. While JsonPort still supports Python 3.7 for compatibility with existing projects, we recommend upgrading to Python 3.8+ for new projects. The CI/CD pipeline tests Python 3.8+ due to GitHub Actions limitations.
 
 ## Quick Start
 
