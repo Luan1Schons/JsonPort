@@ -450,6 +450,54 @@ pytest --help | grep benchmark
 
 ---
 
+## Development and Deployment
+
+### Scripts de Deploy
+
+JsonPort inclui scripts automatizados para sincronizar o changelog e publicar no PyPI:
+
+#### Script Principal (`deploy.sh`)
+```bash
+# Build apenas (sem publicar)
+./deploy.sh
+
+# Build e publicar no PyPI
+./deploy.sh --publish
+
+# Build com versão específica
+./deploy.sh --version=1.1.0 --publish
+```
+
+#### Script Interativo (`release.sh`)
+```bash
+# Verifica mudanças e sugere ações
+./release.sh
+```
+
+**O que os scripts fazem:**
+- ✅ Atualizam o changelog automaticamente
+- ✅ Executam todos os testes
+- ✅ Verificam qualidade do código (black, flake8, mypy)
+- ✅ Constroem o pacote
+- ✅ Publicam no PyPI (se solicitado)
+- ✅ Criam tags e releases no GitHub
+- ✅ Sincronizam com o repositório
+
+**Configuração necessária:**
+1. Configure `~/.pypirc` com suas credenciais do PyPI
+2. Instale dependências: `pip install build twine pytest black flake8 mypy`
+
+Para mais detalhes, veja [DEPLOY.md](DEPLOY.md).
+
+### GitHub Actions
+
+O projeto usa GitHub Actions para:
+- **CI/CD**: Testes automáticos em todas as versões do Python
+- **Release**: Publicação automática no PyPI quando tags são criadas
+- **Code Quality**: Verificação de formatação e tipos
+
+---
+
 ## Contributing
 
 1. Fork the repository

@@ -143,4 +143,8 @@ complex_order.json
 complex_order.json.gz 
 
 # Arquivo de configuração do PyPI (NUNCA versionar)
-.pypirc 
+.pypirc
+
+# Script de deploy (não versionar)
+deploy.sh
+release.sh 
