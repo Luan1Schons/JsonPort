@@ -27,6 +27,7 @@ pip install jsonport
 
 JsonPort supports the following Python versions:
 
+- **Python 3.7** - Full support with all features
 - **Python 3.8** - Full support with all features
 - **Python 3.9** - Full support with all features
 - **Python 3.10** - Full support with all features

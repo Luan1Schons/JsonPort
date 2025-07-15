@@ -148,3 +148,5 @@ complex_order.json.gz
 # Script de deploy (não versionar)
 deploy.sh
 release.sh 
+CHANGELOG.md.backup
+DEPLOY.md
