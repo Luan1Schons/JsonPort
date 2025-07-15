@@ -47,6 +47,30 @@ jobs:
       run: |
         python -m twine upload dist/*
     
+    - name: Extract changelog
+      if: matrix.python-version == '3.11'  # Extrai apenas uma vez
+      run: |
+        python -c "
+        import re
+        
+        version = '${{ github.ref_name }}'
+        
+        with open('CHANGELOG.md', 'r') as f:
+            content = f.read()
+        
+        # Encontrar a seção da versão
+        pattern = r'## \[(' + re.escape(version) + r')\].*?\n(.*?)(?=\n## \[|\n\[Unreleased\]:|\Z)'
+        match = re.search(pattern, content, re.DOTALL)
+        
+        if match:
+            changelog_content = match.group(2).strip()
+            # Remover linhas vazias no início e fim
+            changelog_content = '\n'.join(line for line in changelog_content.split('\n') if line.strip())
+            print(changelog_content)
+        else:
+            print('No changelog found for version ' + version)
+        " > changelog_content.txt
+    
     - name: Create GitHub Release
       if: matrix.python-version == '3.11'  # Cria release apenas uma vez
       uses: actions/create-release@v1
@@ -58,7 +82,9 @@ jobs:
         body: |
           ## What's Changed
           
-          See [CHANGELOG.md](https://github.com/Luan1Schons/JsonPort/blob/main/CHANGELOG.md) for detailed information about this release.
+          ### Version ${{ github.ref_name }}
+          
+          $(cat changelog_content.txt)
           
           ## Installation
           
@@ -70,5 +96,9 @@ jobs:
           
           - [Source Distribution](https://pypi.org/project/jsonport/${{ github.ref_name }}/#files)
           - [Wheel Distribution](https://pypi.org/project/jsonport/${{ github.ref_name }}/#files)
+          
+          ## Full Changelog
+          
+          See [CHANGELOG.md](https://github.com/Luan1Schons/JsonPort/blob/main/CHANGELOG.md) for complete release history.
         draft: false
         prerelease: false 
