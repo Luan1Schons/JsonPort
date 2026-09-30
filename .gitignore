@@ -120,6 +120,7 @@ output/
 # Test and benchmark files
 *.bench
 *.prof
+.benchmarks/
 
 # Coverage
 coverage_html_report/

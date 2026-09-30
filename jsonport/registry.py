@@ -105,9 +105,7 @@ class Registry:
 
     def get_serializer(self, obj_or_type: Any) -> Optional[SerializerFn]:
         """Lookup a registered serializer for an object or type."""
-        target_cls = (
-            obj_or_type if isinstance(obj_or_type, type) else type(obj_or_type)
-        )
+        target_cls = obj_or_type if isinstance(obj_or_type, type) else type(obj_or_type)
         if target_cls in self._serializers:
             return self._serializers[target_cls]
 

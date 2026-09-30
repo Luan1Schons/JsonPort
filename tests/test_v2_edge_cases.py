@@ -237,7 +237,9 @@ class TestLoadsInvalidJson:
         class Simple:
             x: int
 
-        with pytest.raises(ValueError):  # json.JSONDecodeError is a subclass of ValueError
+        with pytest.raises(
+            ValueError
+        ):  # json.JSONDecodeError is a subclass of ValueError
             loads("{invalid json string", Simple)
 
     def test_loads_empty_string(self):
@@ -761,7 +763,9 @@ class TestLowLevelAndInspectionHelpers:
             _deserialize_dataclass({}, int)
 
     def test_none_for_non_optional_raises(self):
-        with pytest.raises(DeserializationError, match="Expected <class 'int'> but got None"):
+        with pytest.raises(
+            DeserializationError, match="Expected <class 'int'> but got None"
+        ):
             load(None, int)
 
     def test_literal_deserialization_invalid_value(self):
