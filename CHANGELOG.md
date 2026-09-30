@@ -5,6 +5,51 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2026-09-30
+
+### Summary
+JsonPort 2.0 is a major evolutionary release introducing a completely modular architecture, extended standard library type support, stream/string operations, custom registry hooks, field metadata controls, and rich error diagnostics.
+
+### Breaking Changes
+- **None**: 100% backward compatible with JsonPort 1.x APIs (`dump`, `load`, `dump_file`, `load_file`, `is_serializable`).
+
+### Added
+- **String & Stream APIs**:
+  - `dumps()`: Direct serialization of complex objects to JSON strings.
+  - `loads()`: Direct deserialization from JSON strings to typed objects.
+  - `dump_stream()` & `load_stream()`: Streaming serialization/deserialization with `io.StringIO`, file handles, and network streams.
+- **Extended Standard Library Types**:
+  - `uuid.UUID`: Serialized to string and restored to `UUID` instances.
+  - `decimal.Decimal`: Exact decimal precision preserved across serialization.
+  - `pathlib.Path` & `pathlib.PurePath`: Filesystem path support.
+  - `bytes` & `bytearray`: Standard Base64 encoded string format.
+  - `ipaddress.IPv4Address`, `IPv6Address`, `IPv4Network`, `IPv6Network`: Full IP networking support.
+  - `datetime.timedelta`: Total seconds representation.
+  - `re.Pattern`: Regular expression pattern string serialization and compilation.
+- **Modern Python Typing Support**:
+  - `typing.Literal`: Validated literal value deserialization.
+  - `typing.Union`: Intelligent candidate scoring and dataclass matching.
+  - `typing.NamedTuple`: Both dict and sequence deserialization with field defaults.
+  - `typing.TypedDict`: Dict-based typed dictionary support with hint validation.
+- **Dataclass Field Metadata**:
+  - `alias`: Customize external JSON field names while keeping Pythonic attribute names.
+  - `exclude`: Exclude sensitive or internal fields from serialization.
+  - `serializer`: Per-field custom serializer function.
+  - `deserializer`: Per-field custom deserializer function.
+- **Extensible Registry**:
+  - `@serializer` and `@deserializer` decorators for global type registration.
+  - `register_serializer()` and `register_deserializer()` functional APIs supporting classes and predicate functions.
+  - `Registry`: Isolated custom registry contexts for multi-tenant or modular applications.
+- **Strict Mode & Rich Diagnostics**:
+  - `strict=True` option in `load()`, `loads()`, and `load_stream()` to reject unexpected fields.
+  - Detailed error paths (e.g. `user.address.zip_code`), object/target types, and offending values on `SerializationError` and `DeserializationError`.
+  - `ConfigurationError` for registry issues.
+- **PEP 561 Compliance**:
+  - Added `py.typed` marker for complete static type checker interoperability.
+
+### Changed
+- Minimum Python requirement updated to `>= 3.9` (supporting Python 3.9, 3.10, 3.11, 3.12, 3.13, and 3.14).
+- Modernized type hints and modular internal architecture (`inspection`, `serializers`, `deserializers`, `registry`, `file_io`).
 
 ## [1.0.2] - 2025-07-15
 

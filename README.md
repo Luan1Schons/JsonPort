@@ -1,31 +1,32 @@
 # JsonPort 🚀
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.16755990.svg)](https://doi.org/10.5281/zenodo.16755990)
-[![Python](https://img.shields.io/badge/Python-3.7%20%7C%203.8%20%7C%203.9%20%7C%203.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://www.python.org/downloads/)
+[![Python](https://img.shields.io/badge/Python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![PyPI](https://img.shields.io/badge/PyPI-jsonport-red.svg)](https://pypi.org/project/jsonport/)
-[![Version](https://img.shields.io/pypi/v/jsonport.svg)](https://pypi.org/project/jsonport/)
+[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://pypi.org/project/jsonport/)
 [![Downloads](https://static.pepy.tech/badge/jsonport)](https://pepy.tech/project/jsonport)
 [![CI](https://github.com/Luan1Schons/JsonPort/workflows/Tests/badge.svg)](https://github.com/Luan1Schons/JsonPort/actions)
 [![Coverage](https://codecov.io/gh/Luan1Schons/JsonPort/branch/main/graph/badge.svg)](https://codecov.io/gh/Luan1Schons/JsonPort)
 
 > **A high-performance Python library for seamless serialization and deserialization of complex Python objects to/from JSON format.** 
 
-JsonPort provides intelligent type handling, caching optimizations, and comprehensive support for dataclasses, enums, datetime objects, and collections with blazing fast performance! ⚡
+JsonPort provides intelligent type handling, caching optimizations, and comprehensive support for dataclasses, enums, datetime objects, collections, and extended standard library types with blazing fast performance! ⚡
 
 ## ✨ Features
 
 | Feature | Description |
 |---------|-------------|
-| 🚀 **High Performance** | Optimized with intelligent caching for type hints and optional type resolution |
-| 🎯 **Type Safety** | Full type hints support with automatic type conversion and validation |
-| 📦 **Dataclass Support** | Native serialization/deserialization of dataclasses with zero configuration |
-| 🗓️ **DateTime Handling** | Automatic ISO format conversion for datetime, date, and time objects |
-| 🔄 **Collection Support** | Lists, tuples, sets, and dictionaries with perfect type preservation |
-| 📁 **File Operations** | Direct file I/O with automatic gzip compression support |
-| 🎨 **Enum Support** | Automatic enum value serialization with type safety |
-| 🛡️ **Error Handling** | Comprehensive error messages and validation with detailed feedback |
-| 🔧 **Zero Dependencies** | Pure Python implementation with no external dependencies |
+| 🚀 **High Performance** | Introspected type caching and optimized conversion algorithms |
+| 🎯 **Type Safety** | PEP 561 compliant (`py.typed`) with full static analysis support (`mypy --strict`) |
+| 📦 **Dataclasses & Modern Typing** | Full support for `dataclass`, `NamedTuple`, `TypedDict`, `Literal`, and intelligent `Union` matching |
+| 🧩 **Extended Types** | Native serialization/deserialization for `UUID`, `Decimal`, `Path`, `bytes`, IP addresses/networks, `timedelta`, and regex `Pattern` |
+| 📝 **Direct String & Stream I/O** | `dumps()` and `loads()` for strings; `dump_stream()` and `load_stream()` for files/network/StringIO |
+| 🏷️ **Field Metadata** | Fine-grained dataclass control: `alias`, `exclude`, and per-field custom `serializer` / `deserializer` |
+| 🔌 **Custom Registry** | Extensible `@serializer` and `@deserializer` decorators, functional APIs, and isolated `Registry` instances |
+| 🛡️ **Strict Mode & Error Paths** | Enforce exact schema match with `strict=True`, pinpoint errors with attribute paths (e.g. `user.address.zip`) |
+| 📁 **File & Compression** | Direct file I/O with automatic `.gz` gzip compression/decompression |
+| 🔧 **Zero Dependencies** | Pure Python implementation with zero third-party dependencies |
 
 ## 🚀 Quick Start
 
@@ -35,7 +36,9 @@ JsonPort provides intelligent type handling, caching optimizations, and comprehe
 pip install jsonport
 ```
 
-### Basic Usage
+### 1. 1.x Backwards Compatible Usage (Dict / Primitive Conversion)
+
+JsonPort 2.0 maintains 100% backward compatibility with all 1.x functions:
 
 ```python
 from dataclasses import dataclass
@@ -43,7 +46,6 @@ from datetime import datetime
 from enum import Enum
 from jsonport import dump, load, dump_file, load_file
 
-# Define your data structures
 class UserRole(Enum):
     ADMIN = "admin"
     USER = "user"
@@ -56,63 +58,128 @@ class User:
     created_at: datetime
     tags: list[str]
 
-# Create an instance
 user = User(
     name="John Doe",
     age=30,
     role=UserRole.ADMIN,
     created_at=datetime.now(),
-    tags=["developer", "python"]
+    tags=["developer", "python"],
 )
 
-# Serialize to dictionary
+# Serialize to dictionary/primitives
 data = dump(user)
-print(data)
-# Output:
-# {
-#   "name": "John Doe",
-#   "age": 30,
-#   "role": "admin",
-#   "created_at": "2025-07-14T10:30:00",
-#   "tags": ["developer", "python"]
-# }
+print(data["role"])  # "admin"
 
-# Deserialize back to object
+# Deserialize back to dataclass
 restored_user = load(data, User)
-print(restored_user.name)  # "John Doe"
+assert restored_user.name == "John Doe"
+
+# Save & load directly from JSON or gzipped files
+dump_file(user, "user.json.gz")
+loaded_user = load_file("user.json.gz", User)
 ```
 
-### File Operations
+### 2. JsonPort 2.0: Direct String & Stream Operations
 
 ```python
-# Save to JSON file
-dump_file(user, "user.json")
+import io
+from jsonport import dumps, loads, dump_stream, load_stream
 
-# Load from JSON file
-loaded_user = load_file("user.json", User)
+# Direct JSON string serialization and deserialization
+json_str = dumps(user, indent=2)
+user_from_str = loads(json_str, User)
 
-# Save with compression
-dump_file(user, "user.json.gz")
+# Stream operations with StringIO, files, or network streams
+stream = io.StringIO()
+dump_stream(user, stream)
+stream.seek(0)
+user_from_stream = load_stream(stream, User)
+```
 
-# Load compressed file
-compressed_user = load_file("user.json.gz", User)
+### 3. JsonPort 2.0: Extended Types & Field Metadata
+
+```python
+import uuid
+import decimal
+import pathlib
+import ipaddress
+from dataclasses import dataclass, field
+from jsonport import dumps, loads
+
+@dataclass
+class ServerNode:
+    id: uuid.UUID
+    rate: decimal.Decimal
+    config_path: pathlib.Path
+    ip: ipaddress.IPv4Address
+    # Field aliases and exclusions
+    secret_token: str = field(metadata={"exclude": True})
+    display_name: str = field(metadata={"alias": "server_name"})
+
+node = ServerNode(
+    id=uuid.uuid4(),
+    rate=decimal.Decimal("99.99"),
+    config_path=pathlib.Path("/etc/server.conf"),
+    ip=ipaddress.IPv4Address("192.168.1.1"),
+    secret_token="super-secret",
+    display_name="Node-Alpha",
+)
+
+json_data = dumps(node)
+# {"id": "...", "rate": "99.99", "config_path": "/etc/server.conf", "ip": "192.168.1.1", "server_name": "Node-Alpha"}
+restored_node = loads(json_data, ServerNode)
+```
+
+### 4. JsonPort 2.0: Custom Registry
+
+```python
+from jsonport import serializer, deserializer, dumps, loads
+
+class Money:
+    def __init__(self, amount: float, currency: str):
+        self.amount = amount
+        self.currency = currency
+
+@serializer(Money)
+def serialize_money(m: Money) -> str:
+    return f"{m.currency} {m.amount:.2f}"
+
+@deserializer(Money)
+def deserialize_money(s: str) -> Money:
+    curr, amt = s.split()
+    return Money(float(amt), curr)
+
+json_str = dumps(Money(49.95, "USD"))
+# '"USD 49.95"'
+money = loads(json_str, Money)
+```
+
+### 5. JsonPort 2.0: Strict Mode & Detailed Error Paths
+
+```python
+from jsonport import loads, DeserializationError
+
+raw_json = '{"name": "Alice", "unexpected_field": 123}'
+
+try:
+    loads(raw_json, User, strict=True)
+except DeserializationError as err:
+    print(err)
+    # Output: Extra keys not permitted in strict mode for User: ['unexpected_field']
+    print(err.target_type)  # <class 'User'>
 ```
 
 ## 🐍 Python Version Support
 
-JsonPort supports the following Python versions:
+JsonPort 2.0 supports modern Python versions:
 
-| Version | Status | Features |
-|---------|--------|----------|
-| **Python 3.7** | ✅ Full Support | All features (EOL - End of Life) |
-| **Python 3.8** | ✅ Full Support | All features |
-| **Python 3.9** | ✅ Full Support | All features |
-| **Python 3.10** | ✅ Full Support | All features |
-| **Python 3.11** | ✅ Full Support | All features |
-| **Python 3.12** | ✅ Full Support | All features |
-| **Python 3.13** | ✅ Full Support | All features |
-
-> **Note**: Python 3.7 reached End of Life (EOL) in June 2023. While JsonPort still supports Python 3.7 for compatibility with existing projects, we recommend upgrading to Python 3.8+ for new projects.
+| Version | Status |
+|---------|--------|
+| **Python 3.9** | ✅ Full Support |
+| **Python 3.10** | ✅ Full Support |
+| **Python 3.11** | ✅ Full Support |
+| **Python 3.12** | ✅ Full Support |
+| **Python 3.13** | ✅ Full Support |
 
 ## 📚 Advanced Examples
 

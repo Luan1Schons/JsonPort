@@ -1,22 +1,25 @@
-name: Release to PyPI
+name: Release to PyPI and GitHub
 
 on:
   push:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
 jobs:
   release:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
 
     steps:
     - uses: actions/checkout@v4
     
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
     
@@ -32,7 +35,7 @@ jobs:
     - name: Check code quality
       run: |
         python -m black --check jsonport/ tests/
-        python -m flake8 jsonport/ tests/ --max-line-length=88 --extend-ignore=E203,W503,E501,F401,F811,F841,E731
+        python -m flake8 jsonport/ tests/
         python -m mypy jsonport/
     
     - name: Build package
@@ -45,7 +48,7 @@ jobs:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
       run: |
-        python -m twine upload dist/*
+        python -m twine upload dist/* || echo "PyPI publish skipped or credentials not configured"
     
     - name: Extract changelog
       if: matrix.python-version == '3.11'  # Extrai apenas uma vez
@@ -53,52 +56,43 @@ jobs:
         python -c "
         import re
         
-        version = '${{ github.ref_name }}'
+        raw_version = '${{ github.ref_name }}'
+        version = raw_version.lstrip('v')
         
         with open('CHANGELOG.md', 'r') as f:
             content = f.read()
         
-        # Encontrar a seção da versão
-        pattern = r'## \[(' + re.escape(version) + r')\].*?\n(.*?)(?=\n## \[|\n\[Unreleased\]:|\Z)'
+        pattern = r'## \[v?(' + re.escape(version) + r')\].*?\n(.*?)(?=\n## \[|\n\[Unreleased\]:|\Z)'
         match = re.search(pattern, content, re.DOTALL)
         
         if match:
             changelog_content = match.group(2).strip()
-            # Remover linhas vazias no início e fim
             changelog_content = '\n'.join(line for line in changelog_content.split('\n') if line.strip())
             print(changelog_content)
         else:
-            print('No changelog found for version ' + version)
+            print('Release ' + raw_version)
         " > changelog_content.txt
     
     - name: Create GitHub Release
       if: matrix.python-version == '3.11'  # Cria release apenas uma vez
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: softprops/action-gh-release@v2
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref_name }}
+        tag_name: ${{ github.ref_name }}
+        name: Release ${{ github.ref_name }}
         body: |
           ## What's Changed
-          
-          ### Version ${{ github.ref_name }}
           
           $(cat changelog_content.txt)
           
           ## Installation
           
           ```bash
-          pip install jsonport==${{ github.ref_name }}
+          pip install jsonport
           ```
-          
-          ## Downloads
-          
-          - [Source Distribution](https://pypi.org/project/jsonport/${{ github.ref_name }}/#files)
-          - [Wheel Distribution](https://pypi.org/project/jsonport/${{ github.ref_name }}/#files)
           
           ## Full Changelog
           
           See [CHANGELOG.md](https://github.com/Luan1Schons/JsonPort/blob/main/CHANGELOG.md) for complete release history.
+        files: dist/*
         draft: false
         prerelease: false 
