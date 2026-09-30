@@ -49,7 +49,11 @@ jobs:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
       run: |
-        python -m twine upload dist/* || echo "PyPI publish skipped or credentials not configured"
+        if [ -n "$TWINE_PASSWORD" ]; then
+          python -m twine upload dist/*
+        else
+          echo "::warning::PYPI_API_TOKEN secret not configured in GitHub Secrets, skipping PyPI upload."
+        fi
     
     - name: Extract changelog
       if: matrix.python-version == '3.11'  # Extrai apenas uma vez
