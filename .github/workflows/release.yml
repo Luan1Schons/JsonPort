@@ -84,20 +84,7 @@ jobs:
       with:
         tag_name: ${{ github.ref_name }}
         name: Release ${{ github.ref_name }}
-        body: |
-          ## What's Changed
-          
-          $(cat changelog_content.txt)
-          
-          ## Installation
-          
-          ```bash
-          pip install jsonport
-          ```
-          
-          ## Full Changelog
-          
-          See [CHANGELOG.md](https://github.com/Luan1Schons/JsonPort/blob/main/CHANGELOG.md) for complete release history.
+        body_path: changelog_content.txt
         files: dist/*
         draft: false
         prerelease: false 
